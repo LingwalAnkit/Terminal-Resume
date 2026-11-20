@@ -6,7 +6,7 @@ use ratatui::{
 };
 
 use super::{theme, widgets};
-use crate::data::{NAME, ROLE};
+use crate::data::RESUME;
 use crate::section::Section;
 
 const HINT: &str = "Up/Down or j/k to move  ·  Enter to open  ·  q to quit";
@@ -23,8 +23,8 @@ pub fn draw(frame: &mut Frame, selected: usize) {
     .areas(body);
 
     let header_lines = vec![
-        Line::from(NAME).style(theme::title()),
-        Line::from(ROLE).style(theme::muted()),
+        Line::from(RESUME.name).style(theme::title()),
+        Line::from(RESUME.role).style(theme::muted()),
     ];
     frame.render_widget(
         Paragraph::new(header_lines).alignment(Alignment::Center),

@@ -4,7 +4,7 @@ use ratatui::{
     widgets::{Block, Paragraph},
 };
 
-use crate::data::{NAME, ROLE};
+use crate::data::RESUME;
 
 use super::theme;
 
@@ -27,12 +27,15 @@ pub fn draw(frame: &mut Frame) {
     .areas(inner);
 
     frame.render_widget(
-        Paragraph::new(NAME)
+        Paragraph::new(RESUME.name)
             .style(theme::title())
             .alignment(Alignment::Center),
         name_area,
     );
-    frame.render_widget(Paragraph::new(ROLE).alignment(Alignment::Center), role_area);
+    frame.render_widget(
+        Paragraph::new(RESUME.role).alignment(Alignment::Center),
+        role_area,
+    );
     frame.render_widget(
         Paragraph::new(HINT)
             .style(theme::muted())

@@ -9,6 +9,10 @@ pub fn title() -> Style {
     Style::new().fg(ACCENT).add_modifier(Modifier::BOLD)
 }
 
+pub fn heading() -> Style {
+    Style::new().add_modifier(Modifier::BOLD)
+}
+
 pub fn muted() -> Style {
     Style::new().fg(MUTED)
 }

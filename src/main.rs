@@ -25,7 +25,7 @@ fn run() -> Result<()> {
     let mut app = App::new();
 
     while !app.should_quit() {
-        guard.terminal().draw(|frame| ui::draw(frame, &app))?;
+        guard.terminal().draw(|frame| ui::draw(frame, &mut app))?;
         if let Some(action) = event::next_action(TICK)? {
             app.handle(action);
         }
