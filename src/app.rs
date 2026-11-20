@@ -27,6 +27,18 @@ impl App {
         }
     }
 
+    /// Starts at the menu, or straight inside `section` when one is given (for `--projects` and similar).
+    pub fn new_at(section: Option<Section>) -> Self {
+        let mut app = Self::new();
+        if let Some(section) = section {
+            app.screen = Screen::Section(section);
+            if let Some(index) = Section::ALL.iter().position(|&s| s == section) {
+                app.selected = index;
+            }
+        }
+        app
+    }
+
     pub fn screen(&self) -> Screen {
         self.screen
     }
@@ -111,6 +123,19 @@ mod tests {
         let app = at_menu();
         assert_eq!(app.screen(), Screen::Menu);
         assert!(!app.should_quit());
+    }
+
+    #[test]
+    fn starting_at_a_section_opens_it_directly() {
+        let app = App::new_at(Some(Section::Education));
+        assert_eq!(app.screen(), Screen::Section(Section::Education));
+        assert_eq!(app.selected(), 4);
+    }
+
+    #[test]
+    fn starting_without_a_section_shows_the_welcome_screen() {
+        let app = App::new_at(None);
+        assert_eq!(app.screen(), Screen::Welcome);
     }
 
     #[test]
