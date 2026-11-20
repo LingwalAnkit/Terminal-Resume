@@ -170,3 +170,40 @@ pub const RESUME: Resume = Resume {
         github: "github.com/LingwalAnkit",
     },
 };
+
+#[cfg(test)]
+mod tests {
+    use super::RESUME;
+
+    // Catches an edit that leaves a section empty, so the screen doesn't go blank silently.
+    #[test]
+    fn every_section_has_content() {
+        assert!(!RESUME.name.is_empty());
+        assert!(!RESUME.role.is_empty());
+        assert!(!RESUME.summary.is_empty());
+        assert!(!RESUME.achievements.is_empty());
+        assert!(!RESUME.skills.is_empty());
+        assert!(!RESUME.projects.is_empty());
+        assert!(!RESUME.experience.is_empty());
+        assert!(!RESUME.education.is_empty());
+        assert!(!RESUME.contact.email.is_empty());
+    }
+
+    #[test]
+    fn every_project_and_job_has_highlights() {
+        for project in RESUME.projects {
+            assert!(
+                !project.highlights.is_empty(),
+                "{} has no highlights",
+                project.name
+            );
+        }
+        for job in RESUME.experience {
+            assert!(
+                !job.highlights.is_empty(),
+                "{} has no highlights",
+                job.title
+            );
+        }
+    }
+}
