@@ -52,3 +52,30 @@ pub fn draw(frame: &mut Frame, selected: usize) {
         .collect();
     frame.render_widget(Paragraph::new(items), column);
 }
+
+#[cfg(test)]
+mod tests {
+    use ratatui::{Terminal, backend::TestBackend};
+
+    use super::*;
+
+    #[test]
+    fn menu_lists_every_section_and_marks_the_selected_one() {
+        let mut terminal =
+            Terminal::new(TestBackend::new(60, 20)).expect("test backend should initialise");
+        terminal
+            .draw(|frame| draw(frame, 2))
+            .expect("drawing to the test backend should succeed");
+
+        let screen = terminal.backend().to_string();
+        for section in Section::ALL {
+            assert!(
+                screen.contains(section.title()),
+                "missing {}",
+                section.title()
+            );
+        }
+        assert!(screen.contains("> Projects"));
+        assert!(screen.contains("  About"));
+    }
+}
