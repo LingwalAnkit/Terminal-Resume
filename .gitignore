@@ -1,6 +1,9 @@
 # Build output
 /target
 
+# Generated output (regenerate with: resume-terminal --plain)
+resume-output.txt
+
 # Editor and OS files
 .idea/
 .vscode/

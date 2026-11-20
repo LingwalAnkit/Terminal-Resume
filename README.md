@@ -75,10 +75,28 @@ The binary is written to `target\release\resume-terminal.exe` on Windows, or `ta
 
 ## Distribute a prebuilt binary
 
-Recipients don't need Rust. Give them the binary:
+Recipients don't need Rust.
 
-1. Build on each platform you want to support. A Windows build runs on Windows, and a Linux build runs on Linux. Cross-building is possible, but it's not covered here.
-2. Package the binary. On Windows:
+### Automatic releases (GitHub Actions)
+
+[.github/workflows/release.yml](.github/workflows/release.yml) builds the program on Windows, Linux, and macOS. To publish a release, push a version tag:
+
+```powershell
+git tag v0.1.0
+```
+
+```powershell
+git push origin v0.1.0
+```
+
+The workflow then creates a GitHub Release with `resume-terminal-windows.zip`, `resume-terminal-linux.tar.gz`, and `resume-terminal-macos.tar.gz` attached. Running the workflow by hand from the Actions tab builds the archives without creating a release.
+
+GitHub only shows releases to people who can open the repository. For recruiters to download without an account, the repository has to be public.
+
+### Manual package (Windows)
+
+1. Build the binary: `cargo build --release`.
+2. Package it:
 
    ```powershell
    Compress-Archive -Path target\release\resume-terminal.exe -DestinationPath resume-terminal-windows.zip

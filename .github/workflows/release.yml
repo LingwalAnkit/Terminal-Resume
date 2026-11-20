@@ -1,0 +1,67 @@
+name: Release
+
+# Builds the binary on Windows, Linux, and macOS.
+# Pushing a tag such as v0.1.0 also creates a GitHub Release with the three archives attached.
+# Running the workflow by hand only builds the archives, which you can download from the run page.
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            asset: resume-terminal-windows.zip
+          - os: ubuntu-latest
+            asset: resume-terminal-linux.tar.gz
+          - os: macos-latest
+            asset: resume-terminal-macos.tar.gz
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Test
+        run: cargo test
+
+      - name: Build release binary
+        run: cargo build --release
+
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: Compress-Archive -Path target/release/resume-terminal.exe -DestinationPath "${{ matrix.asset }}"
+
+      - name: Package (Linux and macOS)
+        if: runner.os != 'Windows'
+        run: tar -czf "${{ matrix.asset }}" -C target/release resume-terminal
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset }}
+          path: ${{ matrix.asset }}
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Create GitHub Release
+        run: gh release create "$GITHUB_REF_NAME" dist/* --title "$GITHUB_REF_NAME" --generate-notes
