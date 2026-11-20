@@ -1,0 +1,75 @@
+PROJECT BRIEF — RUST TERMINAL RESUME
+=====================================
+
+Goal
+----
+Build a polished, interactive terminal-based resume/portfolio written in Rust. When someone runs the program in PowerShell, Windows Terminal, CMD, macOS Terminal, or Linux terminal, it should display a memorable resume experience—not just print a static block of text.
+
+Core concept
+------------
+A terminal-first resume with a tasteful retro/dev aesthetic. It should feel professional and readable, not gimmicky. Include a welcome screen, navigation/menu, and sections that can be explored interactively.
+
+Preferred stack
+--------------
+- Rust
+- ratatui for terminal UI
+- crossterm for terminal events and cross-platform terminal handling
+- Cargo for project/build management
+
+Design direction
+---------------
+- Dark terminal aesthetic, restrained colors (avoid rainbow effects)
+- Clear typography/layout using terminal characters and borders
+- Responsive to terminal dimensions; gracefully handle small terminal windows
+- Clean transitions between screens
+- Keyboard navigation (arrows or j/k, Enter, Esc, q)
+- Accessible fallback if terminal UI initialization fails
+- Avoid unnecessary animations or flashing
+
+Resume content / sections
+------------------------
+Create sections/screens for:
+1. Intro / About — name, role, short profile summary
+2. Skills — languages, frameworks, tools, and areas of focus
+3. Projects — project name, short description, tech stack, links
+4. Experience — internship/work experience
+5. Education
+6. Contact — email, GitHub, LinkedIn, portfolio links
+
+Use placeholder content initially where personal details are missing. Make all resume data easy to update, ideally stored in a separate data/config file or a clearly organized Rust module. Do not invent accomplishments, metrics, credentials, or URLs.
+
+Interaction
+----------
+- Main menu/navigation to the sections above
+- A clear way to return to the main screen
+- Esc and q should behave predictably
+- Optional: support CLI arguments to jump directly to a section, e.g. --projects or --help
+- Links should be displayed clearly; do not assume the terminal can open them automatically
+
+Engineering requirements
+----------------------
+- Organize code into sensible modules instead of one giant main.rs
+- Handle terminal setup and teardown safely: restore terminal state even if the app exits with an error
+- Use Result-based error handling; avoid unwrap() in normal application code
+- Keep the code understandable and maintainable
+- Build and test on Windows first, but keep cross-platform compatibility in mind (Windows, Linux, macOS)
+- Include README with setup, run, build, and distribution instructions
+- Include a .gitignore
+- Provide a release build command and explain how to distribute prebuilt binaries
+
+Implementation workflow
+---------------------
+1. First propose the architecture, crate choices, file structure, and UI layout.
+2. Then implement in small stages; do not dump the entire project in one response.
+3. Start with a working skeleton and terminal cleanup handling.
+4. Add navigation and the main screen.
+5. Add resume sections and content/data organization.
+6. Add polish, resize handling, and CLI arguments.
+7. Test/build and fix issues.
+8. Finish with a README and release/distribution guide.
+
+Important
+---------
+Before writing code, ask me for the actual resume content or use clearly marked placeholders. Do not fabricate personal information. Keep the visual design professional and distinctive.
+
+The intended end result is a Rust executable that I can build and share. A recruiter should ideally be able to download a prebuilt executable and run it without installing Rust.
